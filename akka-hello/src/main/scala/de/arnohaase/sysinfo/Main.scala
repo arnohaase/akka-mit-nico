@@ -14,7 +14,7 @@ object Main extends App {
   val system = ActorSystem("SystemInfoSystem")
   val inbox = Inbox.create(system)
   val currentTimeProvider = system.actorOf(Props[CurrentTimeActor] , "CurrentTime")
-  val infoProvider = system.actorOf(Props (new InfoProviderActor (List (currentTimeProvider))) , "InfoProvider")
+  val infoProvider = system.actorOf(Props (new InfoProviderActor (Set (currentTimeProvider))) , "InfoProvider")
 
   inbox.send(infoProvider, GiveMeData)
   try {

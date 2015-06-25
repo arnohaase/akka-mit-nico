@@ -17,7 +17,7 @@ case object GiveMeData
 case object Finished
 case class SystemDataRequest (client: ActorRef, timeout: FiniteDuration)
 
-class InfoProviderActor (scalarProviders: List[ActorRef]) extends Actor { //TODO dynamic (un)registration of scalar providers?
+class InfoProviderActor (scalarProviders: Set[ActorRef]) extends Actor { //TODO dynamic (un)registration of scalar providers?
   override def receive = {
     case GiveMeData =>
       val client = sender()
@@ -26,8 +26,7 @@ class InfoProviderActor (scalarProviders: List[ActorRef]) extends Actor { //TODO
   }
 }
 
-class InfoDataCollector (client: ActorRef, scalarProviders: List[ActorRef], timeout: FiniteDuration) extends Actor {
-  var numResponses = 0
+class InfoDataCollector (client: ActorRef, var scalarProviders: Set[ActorRef], timeout: FiniteDuration) extends Actor {
   var result = Map[ScalarType, ScalarValue]()
 
   scalarProviders.foreach (_ ! GiveMeData)
@@ -36,12 +35,15 @@ class InfoDataCollector (client: ActorRef, scalarProviders: List[ActorRef], time
 
   override def receive = {
     case m: Map[ScalarType, ScalarValue] =>
-      println ("received partial data: " + m)
-      result ++= m
-      numResponses += 1
-      if (numResponses == scalarProviders.size) {
-        timeoutHandle.cancel()
-        self ! Finished
+      val oldNum = scalarProviders.size
+      scalarProviders -= sender()
+      if (scalarProviders.size < oldNum) {
+        println("received partial data: " + m)
+        result ++= m
+        if (scalarProviders.isEmpty) {
+          timeoutHandle.cancel()
+          self ! Finished
+        }
       }
     case Finished =>
       println ("finished - sending response to " + client)
