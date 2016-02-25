@@ -11,6 +11,7 @@ import akka.cluster.routing.ClusterRouterGroup;
 import akka.cluster.routing.ClusterRouterGroupSettings;
 import akka.japi.Option;
 import akka.routing.ConsistentHashingGroup;
+import akka.routing.RoundRobinGroup;
 
 
 public class AClusterMain {
@@ -32,7 +33,7 @@ public class AClusterMain {
         System.out.println (routeesPaths);
 
         ActorRef workerRouter = system.actorOf(
-        	    new ClusterRouterGroup(new ConsistentHashingGroup(routeesPaths),
+        	    new ClusterRouterGroup (new RoundRobinGroup (routeesPaths),
         	        new ClusterRouterGroupSettings(
                             totalInstances,
                             routeesPaths,
