@@ -1,11 +1,12 @@
 package a.systime.out;
 
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.time.Instant;
 
 
-public class MsgSystemTime {
+public class MsgSystemTime implements Serializable {
     public final InetAddress inetAddress;
     public final Instant sysTime;
 

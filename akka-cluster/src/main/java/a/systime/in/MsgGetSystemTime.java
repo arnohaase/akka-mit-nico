@@ -1,8 +1,8 @@
 package a.systime.in;
 
-/**
- * Created by arno on 25.02.16.
- */
-public class MsgGetSystemTime {
+import java.io.Serializable;
+
+
+public class MsgGetSystemTime implements Serializable {
     public static final MsgGetSystemTime INSTANCE = new MsgGetSystemTime ();
 }
