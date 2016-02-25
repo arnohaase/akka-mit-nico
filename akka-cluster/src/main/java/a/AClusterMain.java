@@ -6,6 +6,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 
 public class AClusterMain {
@@ -17,7 +18,11 @@ public class AClusterMain {
                 "SysTime");
 
         final AHttpApp httpApp = new AHttpApp (system, sysTimeActor);
-        httpApp.bindRoute ("localhost", 8080, system);
+
+        final String hostname = "192.168.178.20";
+//        final String hostname = InetAddress.getLocalHost ().getCanonicalHostName ();
+
+        httpApp.bindRoute (hostname, 8080, system);
 
         System.out.println ("Started HTTP endpoints");
         System.in.read ();
