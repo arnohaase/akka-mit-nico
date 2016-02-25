@@ -1,17 +1,15 @@
 package a;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import a.systime.SysTimeActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.cluster.routing.ClusterRouterGroup;
 import akka.cluster.routing.ClusterRouterGroupSettings;
-import akka.japi.Option;
-import akka.routing.ConsistentHashingGroup;
 import akka.routing.RoundRobinGroup;
+
+import java.io.IOException;
+import java.util.Collections;
 
 
 public class AClusterMain {
