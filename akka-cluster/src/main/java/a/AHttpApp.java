@@ -4,7 +4,6 @@ import a.systime.in.MsgGetSystemTime;
 import a.systime.out.MsgSystemTime;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.http.javadsl.model.MediaType;
 import akka.http.javadsl.model.MediaTypes;
 import akka.http.javadsl.server.HttpApp;
 import akka.http.javadsl.server.RequestContext;
@@ -17,7 +16,8 @@ import scala.concurrent.Future;
 
 import java.util.concurrent.TimeUnit;
 
-import static a.util.ScalaFunctionAdapter.*;
+import static a.util.ScalaFunctionAdapter.fCase;
+import static a.util.ScalaFunctionAdapter.partFunc;
 
 
 public class AHttpApp extends HttpApp {
