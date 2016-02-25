@@ -7,18 +7,18 @@ import java.time.Instant;
 
 
 public class MsgSystemTime implements Serializable {
-    public final InetAddress inetAddress;
+    public final String hostname;
     public final Instant sysTime;
 
-    public MsgSystemTime (InetAddress inetAddress, Instant sysTime) {
-        this.inetAddress = inetAddress;
+    public MsgSystemTime (String hostname, Instant sysTime) {
+        this.hostname = hostname;
         this.sysTime = sysTime;
     }
 
     @Override
     public String toString () {
         return "MsgSystemTime{" +
-                "inetAddress=" + inetAddress +
+                "hostname='" + hostname + '\'' +
                 ", sysTime=" + sysTime +
                 '}';
     }

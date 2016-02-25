@@ -24,6 +24,8 @@ public class SysTimeActor extends UntypedActor {
     }
 
     private void onGetSystemTime (MsgGetSystemTime msg) throws UnknownHostException {
-        sender ().tell (new MsgSystemTime (InetAddress.getLocalHost (), Instant.now ()), self ());
+        System.err.println ("******************** getting sys time");
+        sender ().tell (new MsgSystemTime (InetAddress.getLocalHost ().getHostName (), Instant.now ()), self ());
+        System.err.println ("... and done");
     }
 }
