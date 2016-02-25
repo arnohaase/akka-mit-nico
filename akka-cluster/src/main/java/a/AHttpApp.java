@@ -51,6 +51,6 @@ public class AHttpApp extends HttpApp {
     }
 
     private String asJson (MsgSystemTime msg) {
-        return "{\"time\": " + msg.sysTime.toEpochMilli () + "}";
+        return "{\"time\": " + msg.sysTime.toEpochMilli () + ", \"host\":\"" + msg.inetAddress.getCanonicalHostName () + "\"}";
     }
 }
