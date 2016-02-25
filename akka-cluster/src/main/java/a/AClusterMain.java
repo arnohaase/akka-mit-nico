@@ -9,6 +9,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.cluster.routing.ClusterRouterGroup;
 import akka.cluster.routing.ClusterRouterGroupSettings;
+import akka.japi.Option;
 import akka.routing.ConsistentHashingGroup;
 
 
@@ -17,21 +18,26 @@ public class AClusterMain {
         final String hostname = args[0];
         final int port = 8181;
 
+        System.setProperty ("akka.remote.netty.tcp.hostname", hostname);
+
         final ActorSystem system = ActorSystem.create ("a-actor-system");
 
         final ActorRef sysTimeActor = system.actorOf (Props
                 .create (SysTimeActor.class, () -> new SysTimeActor ()),
                 "SysTime");
-        
-        int totalInstances = 100;
-        Iterable<String> routeesPaths = Collections.singletonList(sysTimeActor.path().toStringWithoutAddress());
-        boolean allowLocalRoutees = true;
-        String useRole = null;
-        
+
+        final int totalInstances = 100;
+        final Iterable<String> routeesPaths = Collections.singletonList(sysTimeActor.path().toStringWithoutAddress());
+
+        System.out.println (routeesPaths);
+
         ActorRef workerRouter = system.actorOf(
         	    new ClusterRouterGroup(new ConsistentHashingGroup(routeesPaths),
-        	        new ClusterRouterGroupSettings(totalInstances, routeesPaths,
-        	            allowLocalRoutees, useRole)).props(), "workerRouter");
+        	        new ClusterRouterGroupSettings(
+                            totalInstances,
+                            routeesPaths,
+                            true,
+                            null)).props(), "sysTimeRouter");
 
         final AHttpApp httpApp = new AHttpApp (system, workerRouter);
 
