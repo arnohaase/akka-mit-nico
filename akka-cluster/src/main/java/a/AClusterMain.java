@@ -27,20 +27,14 @@ public class AClusterMain {
                 .create (SysTimeActor.class, () -> new SysTimeActor ()),
                 "SysTime");
 
-        final int totalInstances = 100;
         final Iterable<String> routeesPaths = Collections.singletonList(sysTimeActor.path().toStringWithoutAddress());
 
-        System.out.println (routeesPaths);
-
-        ActorRef workerRouter = system.actorOf(
+        final ActorRef sysTimeRouter = system.actorOf(
         	    new ClusterRouterGroup (new RoundRobinGroup (routeesPaths),
-        	        new ClusterRouterGroupSettings(
-                            totalInstances,
-                            routeesPaths,
-                            true,
-                            null)).props(), "sysTimeRouter");
+        	        new ClusterRouterGroupSettings (100, routeesPaths, true, null)).props(),
+                "sysTimeRouter");
 
-        final AHttpApp httpApp = new AHttpApp (system, workerRouter);
+        final AHttpApp httpApp = new AHttpApp (system, sysTimeRouter);
 
         httpApp.bindRoute (hostname, port, system);
 
