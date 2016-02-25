@@ -5,6 +5,9 @@
 .cache
 .history
 .idea
+.classpath
+.project
+.settings
 *.iml
 .lib/
 dist/*
