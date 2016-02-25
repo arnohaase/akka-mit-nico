@@ -4,7 +4,6 @@ import akka.actor.{Props, Inbox, ActorSystem}
 import scala.concurrent.duration._
 
 
-
 /**
  * @author arno
  */
