@@ -13,7 +13,7 @@ public class AClusterMain {
         final String hostname = args[0];
         final int port = 8181;
 
-        final ActorSystem system = ActorSystem.create ();
+        final ActorSystem system = ActorSystem.create ("a-actor-system");
 
         final ActorRef sysTimeActor = system.actorOf (Props
                 .create (SysTimeActor.class, () -> new SysTimeActor ()),
